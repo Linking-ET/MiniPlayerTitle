@@ -1,9 +1,9 @@
 package cn.lunadeer.miniplayertitle.commands;
 
-import cn.lunadeer.minecraftpluginutils.Notification;
 import cn.lunadeer.miniplayertitle.dtos.PlayerInfoDTO;
 import cn.lunadeer.miniplayertitle.dtos.PlayerTitleDTO;
 import cn.lunadeer.miniplayertitle.dtos.TitleDTO;
+import cn.lunadeer.miniplayertitle.utils.Notification;
 import org.bukkit.command.CommandSender;
 
 import java.time.LocalDateTime;

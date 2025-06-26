@@ -1,8 +1,8 @@
 package cn.lunadeer.miniplayertitle.events;
 
-import cn.lunadeer.minecraftpluginutils.Notification;
 import cn.lunadeer.miniplayertitle.dtos.PlayerInfoDTO;
 import cn.lunadeer.miniplayertitle.dtos.PlayerTitleDTO;
+import cn.lunadeer.miniplayertitle.utils.Notification;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

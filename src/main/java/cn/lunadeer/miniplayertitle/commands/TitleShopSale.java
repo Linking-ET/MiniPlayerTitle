@@ -1,6 +1,5 @@
 package cn.lunadeer.miniplayertitle.commands;
 
-import cn.lunadeer.minecraftpluginutils.Notification;
 import cn.lunadeer.miniplayertitle.dtos.PlayerInfoDTO;
 import cn.lunadeer.miniplayertitle.dtos.PlayerTitleDTO;
 import cn.lunadeer.miniplayertitle.dtos.TitleDTO;
@@ -8,6 +7,7 @@ import cn.lunadeer.miniplayertitle.dtos.TitleShopDTO;
 import cn.lunadeer.miniplayertitle.tuis.MyTitles;
 import cn.lunadeer.miniplayertitle.tuis.SaleInfo;
 import cn.lunadeer.miniplayertitle.tuis.Shop;
+import cn.lunadeer.miniplayertitle.utils.Notification;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

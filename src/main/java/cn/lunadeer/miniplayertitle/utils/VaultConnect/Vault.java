@@ -1,0 +1,48 @@
+package cn.lunadeer.miniplayertitle.utils.VaultConnect;
+
+import cn.lunadeer.miniplayertitle.utils.XLogger;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Vault implements VaultInterface {
+
+    private Economy econ = null;
+
+    @Override
+    public boolean init(JavaPlugin plugin) {
+        RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp != null) {
+            econ = rsp.getProvider();
+            return true;
+        }
+        XLogger.error("Vault not available.");
+        return false;
+    }
+
+    @Override
+    public String currencyNamePlural() {
+        return econ.currencyNamePlural();
+    }
+
+    @Override
+    public String currencyNameSingular() {
+        return econ.currencyNameSingular();
+    }
+
+    @Override
+    public void withdrawPlayer(OfflinePlayer player, double amount) {
+        econ.withdrawPlayer(player, amount);
+    }
+
+    @Override
+    public void depositPlayer(OfflinePlayer player, double amount) {
+        econ.depositPlayer(player, amount);
+    }
+
+    @Override
+    public double getBalance(OfflinePlayer player) {
+        return econ.getBalance(player);
+    }
+}

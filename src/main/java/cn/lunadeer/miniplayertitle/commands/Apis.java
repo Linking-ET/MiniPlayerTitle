@@ -1,8 +1,8 @@
 package cn.lunadeer.miniplayertitle.commands;
 
-import cn.lunadeer.minecraftpluginutils.Common;
 import cn.lunadeer.miniplayertitle.MiniPlayerTitle;
 import cn.lunadeer.miniplayertitle.dtos.TitleDTO;
+import cn.lunadeer.miniplayertitle.utils.Misc;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -28,7 +28,7 @@ public class Apis {
             titleBukkit = ChatColor.translateAlternateColorCodes('&', title.getTitleColoredBukkit());
         }
 
-        if (Common.isPaper()) {
+        if (Misc.isPaper()) {
             Component newDisplayName = Component.text()
                     .append(titleComponent)
                     .append(Component.text("<"))

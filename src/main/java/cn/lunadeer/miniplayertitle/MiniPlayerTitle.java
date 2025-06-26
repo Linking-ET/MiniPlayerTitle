@@ -1,16 +1,17 @@
 package cn.lunadeer.miniplayertitle;
 
-import cn.lunadeer.minecraftpluginutils.*;
-import cn.lunadeer.minecraftpluginutils.VaultConnect.VaultConnect;
-import cn.lunadeer.minecraftpluginutils.databse.DatabaseManager;
-import cn.lunadeer.minecraftpluginutils.databse.DatabaseType;
 import cn.lunadeer.miniplayertitle.commands.TitleCard;
 import cn.lunadeer.miniplayertitle.dtos.TitleDTO;
 import cn.lunadeer.miniplayertitle.events.Events;
 import cn.lunadeer.miniplayertitle.events.PaperChat;
 import cn.lunadeer.miniplayertitle.events.SpigotChat;
-import cn.lunadeer.miniplayertitle.utils.ConfigManager;
-import cn.lunadeer.miniplayertitle.utils.DatabaseTables;
+import cn.lunadeer.miniplayertitle.managers.Configuration;
+import cn.lunadeer.miniplayertitle.utils.Misc;
+import cn.lunadeer.miniplayertitle.utils.Notification;
+import cn.lunadeer.miniplayertitle.utils.XLogger;
+import cn.lunadeer.miniplayertitle.utils.bStatsMetrics;
+import cn.lunadeer.miniplayertitle.utils.databse.DatabaseManager;
+import cn.lunadeer.miniplayertitle.utils.scheduler.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,20 +28,12 @@ public final class MiniPlayerTitle extends JavaPlugin {
         instance = this;
         new Scheduler(this);
         new Notification(this);
-        new XLogger(instance);
-        config = new ConfigManager(instance);
-        XLogger.setDebug(config.isDebug());
-        new DatabaseManager(this,
-                DatabaseType.valueOf(config.getDbType().toUpperCase()),
-                config.getDbHost(),
-                config.getDbPort(),
-                config.getDbName(),
-                config.getDbUser(),
-                config.getDbPass());
-        DatabaseTables.migrate();
-        if (config.isExternalEco()) {
-            XLogger.info("已启用外部经济插件");
-            new VaultConnect(this);
+        new XLogger(this);
+
+        try {
+            Configuration.loadConfigurationAndDatabase(instance.getServer().getConsoleSender());
+        } catch (Exception e) {
+            XLogger.error(e);
         }
 
         if (usingPapi()) {
@@ -49,7 +42,7 @@ public final class MiniPlayerTitle extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         Bukkit.getPluginManager().registerEvents(new TitleCard(), this);
-        if (Common.isPaper()) {
+        if (Misc.isPaper()) {
             Bukkit.getPluginManager().registerEvents(new PaperChat(), this);
         } else {
             Bukkit.getPluginManager().registerEvents(new SpigotChat(), this);
@@ -57,13 +50,7 @@ public final class MiniPlayerTitle extends JavaPlugin {
         Objects.requireNonNull(Bukkit.getPluginCommand("MiniPlayerTitle")).setExecutor(new Commands());
         Objects.requireNonNull(Bukkit.getPluginCommand("MiniPlayerTitle")).setTabCompleter(new Commands());
 
-        bStatsMetrics metrics = new bStatsMetrics(this, 21444);
-        if (config.isCheckUpdate()) {
-            giteaReleaseCheck = new GiteaReleaseCheck(this,
-                    "https://ssl.lunadeer.cn:14446",
-                    "zhangyuheng",
-                    "MiniPlayerTitle");
-        }
+        new bStatsMetrics(this, 21444);
 
         XLogger.info("称号插件已加载");
         XLogger.info("版本: " + this.getDescription().getVersion());
@@ -85,9 +72,7 @@ public final class MiniPlayerTitle extends JavaPlugin {
     }
 
     public static MiniPlayerTitle instance;
-    public static ConfigManager config;
-    private GiteaReleaseCheck giteaReleaseCheck;
-    private Map<UUID, TitleDTO> playerUsingTitle = new HashMap<>();
+    private final Map<UUID, TitleDTO> playerUsingTitle = new HashMap<>();
 
     public static boolean usingPapi() {
         return Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
