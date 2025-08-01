@@ -2,8 +2,7 @@ name: Java CI-CD with Maven
 
 on:
   push:
-    tags:
-      - '*'
+  workflow_dispatch:
 
 jobs:
   build:
